@@ -35,8 +35,26 @@ void processInput(GLFWwindow *window)
 		glfwSetWindowShouldClose(window, true);
 }
 
-//set up graphic pipeline
-void setUpProgram(unsigned int* pShaderProgram){
+void set_up_triangle_pipeline(unsigned int VAO, unsigned int shaderProgram){
+	//initialize triangle's vertex
+	float vertices[] = {
+		-0.5f, -0.5f, 0.0f,
+		0.5f, -0.5f, 0.0f,
+		0.0f,  0.5f, 0.0f
+	};
+	
+	//VAO creation
+	glGenVertexArrays(1, &VAO);
+	//Configure VAO
+	glBindVertexArray(VAO);//select VAO as the active VAO
+	
+	//initialize the vertex buffer
+	unsigned int VBO;//buffer ID
+	glGenBuffers(1, &VBO);//create the buffer
+	glBindBuffer(GL_ARRAY_BUFFER, VBO); //define buffer type
+	//transfer data to the buffer
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	
 	//create our vertex shader
 	unsigned int vertexShader;//shader ID
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);//create and type the shader as a Vertex Shader
@@ -68,7 +86,7 @@ void setUpProgram(unsigned int* pShaderProgram){
 	}
 	
 	//create program shader
-	unsigned int shaderProgram = glCreateProgram();//create the program shader and retrun its ID
+	shaderProgram = glCreateProgram();//create the program shader and retrun its ID
 	//attach the shaders to the shade program
 	glAttachShader(shaderProgram, vertexShader);//attach vertex shader
 	glAttachShader(shaderProgram, fragmentShader);//attach fragment shader
@@ -81,55 +99,17 @@ void setUpProgram(unsigned int* pShaderProgram){
 		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
 	}
 	
-	*pShaderProgram = shaderProgram;
+	//activating the shader program
+	glUseProgram(shaderProgram);
 	
 	//delete vertex and fragment shader
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
-}
-
-
-//set up VAO VBO EBO to create a triangle
-void setUpTriangle(unsigned int* pVAO, unsigned int* pEBO){
-	//initialize triangle's vertex
-	float vertices[] = {
-	     0.5f,  0.5f, 0.0f,  // top right
-	     0.5f, -0.5f, 0.0f,  // bottom right
-	    -0.5f, -0.5f, 0.0f,  // bottom left
-	    -0.5f,  0.5f, 0.0f   // top left 
-	};
-	unsigned int indices[] = {  // note that we start from 0!
-	    0, 1, 3,   // first triangle
-	    1, 2, 3    // second triangle
-	};  
-	
-	unsigned int VAO, VBO, EBO;
-	
-	
-	//VAO and EBO creation
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &EBO);
-	glBindVertexArray(VAO);//select VAO as the active VAO
-	
-	//initialize the vertex buffer
-	glGenBuffers(1, &VBO);//create the buffer
-	glBindBuffer(GL_ARRAY_BUFFER, VBO); //select VBO as the active VBO
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);//transfer data to the buffer
-	
-	
-	
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);//select EBO as the active EBO
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);//transfer data to the buffer
 	
 	//linking vertex attributes
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);//define vertex shader's input (vertex attribut) at position 0
 	glEnableVertexAttribArray(0);//enable the vertex attribut
-	
-	*pVAO = VAO;
-	*pEBO = EBO;
 }
-
-
 
 int main()
 {
@@ -162,15 +142,9 @@ int main()
 	//call framebuffer_size_callback to reshape the render window when the window shape change
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	
-	
-	
-	
-	
 	//generate pipeline
-	unsigned int VAO, EBO;
-	unsigned int shaderProgram;	
-	setUpProgram(&shaderProgram);
-	setUpTriangle(&VAO, &EBO);
+	unsigned int VAO, shaderProgram;
+	set_up_triangle_pipeline(VAO, shaderProgram);
 	
 	
 	//render loop
@@ -187,7 +161,7 @@ int main()
 		
 		glUseProgram(shaderProgram);
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 		
 		//swap color buffer and show it on screen
 		glfwSwapBuffers(window);
