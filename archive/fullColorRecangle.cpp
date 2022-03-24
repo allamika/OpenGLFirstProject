@@ -6,7 +6,6 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "shader.h"
 
 const char *vertexShaderSource = "#version 330 core\n"
 		"layout (location = 0) in vec3 aPos;\n"
@@ -176,7 +175,8 @@ int main()
 		
 	//generate pipeline
 	unsigned int VAO, EBO;
-	Shader ourShader("./shader/unifColor/vertexShaderUnifColor.vs", "./shader/unifColor/fragmentShaderUnifColor.fs");
+	unsigned int shaderProgram;	
+	setUpProgram(&shaderProgram);
 	setUpTriangle(&VAO, &EBO);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);//edge
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);//filled
@@ -194,13 +194,16 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 		
 		//be sure that the program si active
-		//glUseProgram(shaderProgram);		
+		//glUseProgram(shaderProgram);
+		
+		float timeValue = glfwGetTime();
+		float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+		int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");//return index of the Uniform named "ourColor" in shaderProgram
+		glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);//set the new uniform value
+		
 		
 		//render triangles
-		ourShader.use();
-		ourShader.setFloat("redUniform", 0.5f);
-		ourShader.setFloat("greenUniform", 0.5f);
-		ourShader.setFloat("blueUniform", 0.5f);
+		glUseProgram(shaderProgram);
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		
