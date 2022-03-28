@@ -2,11 +2,13 @@
 #include <ostream>
 #include <unistd.h>
 #include <math.h> 
+#include <tuple>
 
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "shader.h"
+#include "bezierCurve.h"
 
 const char *vertexShaderSource = "#version 330 core\n"
 		"layout (location = 0) in vec3 aPos;\n"
@@ -138,20 +140,12 @@ void setUpTriangle(unsigned int* pVAO, unsigned int* pEBO){
 }
 
 //set up VAO VBO EBO to create a triangle
-void setUpLine(unsigned int* pVAO, unsigned int* pEBO){
-	//initialize triangle's vertex
-	float vertices[] = {
-	     // position        //color
-	     0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // top right
-	     0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom right
-	    -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
-	    0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f  // top left 
-	};
-	unsigned int indices[] = {  // note that we start from 0!
-	    1, 2,
-	    2, 3,
-	    1, 3
-	};  
+void setUpLine(unsigned int* pVAO, unsigned int* pEBO, unsigned int* nbIndice){
+	BezierCurve* ourBezierCurve = new BezierCurve(40); //create bezier curve vertices and indices with n lines
+	std::tuple<float*, int> vertices = ourBezierCurve->getVertices();
+	std::tuple<unsigned int*, int>indices = ourBezierCurve->Indices;
+	
+	*nbIndice = std::get<1>(indices)/sizeof(unsigned int);
 	
 	unsigned int VAO, VBO, EBO;
 	
@@ -164,12 +158,12 @@ void setUpLine(unsigned int* pVAO, unsigned int* pEBO){
 	//initialize the vertex buffer
 	glGenBuffers(1, &VBO);//create the buffer
 	glBindBuffer(GL_ARRAY_BUFFER, VBO); //select VBO as the active VBO
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);//transfer data to the buffer
+	glBufferData(GL_ARRAY_BUFFER, std::get<1>(vertices), std::get<0>(vertices), GL_STATIC_DRAW);//transfer data to the buffer
 	
 	
 	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);//select EBO as the active EBO
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);//transfer data to the buffer
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, std::get<1>(indices), std::get<0>(indices), GL_STATIC_DRAW);//transfer data to the buffer
 	
 	//linking vertex attributes
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);//define vertex shader's input (vertex attribut) at position 0 : position attribute
@@ -220,10 +214,10 @@ int main()
 	
 		
 	//generate pipeline
-	unsigned int VAO, EBO;
-	Shader ourShader("./shader/upSideDown/vertexShaderUpDown.vs", "./shader/upSideDown/fragmentShaderUpDown.fs");
+	unsigned int VAO, EBO, nbIndice;
+	Shader ourShader("./shader/unifColor/vertexShaderUnifColor.vs", "./shader/unifColor/fragmentShaderUnifColor.fs");
 	//setUpTriangle(&VAO, &EBO);
-	setUpLine(&VAO, &EBO);
+	setUpLine(&VAO, &EBO, &nbIndice);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);//edge
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);//filled
 	
@@ -238,9 +232,7 @@ int main()
 		//clearing the buffer from the previous frame
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f); //set the color to use to clear the color buffer
 		glClear(GL_COLOR_BUFFER_BIT);
-		
-		//be sure that the program si active
-		//glUseProgram(shaderProgram);		
+				
 		
 		//render triangles
 		ourShader.use();
@@ -249,7 +241,7 @@ int main()
 		ourShader.setFloat("blueUniform", 0.5f);
 		glBindVertexArray(VAO);
 		//glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
-		glDrawElements(GL_LINES,6,GL_UNSIGNED_INT,0);
+		glDrawElements(GL_LINES,nbIndice,GL_UNSIGNED_INT,0);
 		
 		//swap color buffer and show it on screen
 		glfwSwapBuffers(window);
