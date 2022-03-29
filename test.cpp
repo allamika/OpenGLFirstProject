@@ -7,6 +7,11 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+
 #include "shader.h"
 #include "bezierCurve.h"
 
@@ -215,11 +220,13 @@ int main()
 		
 	//generate pipeline
 	unsigned int VAO, EBO, nbIndice;
-	Shader ourShader("./shader/unifColor/vertexShaderUnifColor.vs", "./shader/unifColor/fragmentShaderUnifColor.fs");
-	//setUpTriangle(&VAO, &EBO);
-	setUpLine(&VAO, &EBO, &nbIndice);
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);//edge
+	Shader ourShader("./shader/Vertex/uniformTransform.vs", "./shader/unifColor/fragmentShaderUnifColor.fs");
+	setUpTriangle(&VAO, &EBO);
+	//setUpLine(&VAO, &EBO, &nbIndice);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);//edge
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);//filled
+	
+	
 	
 	//render loop
 	while(!glfwWindowShouldClose(window))
@@ -232,16 +239,23 @@ int main()
 		//clearing the buffer from the previous frame
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f); //set the color to use to clear the color buffer
 		glClear(GL_COLOR_BUFFER_BIT);
-				
 		
 		//render triangles
 		ourShader.use();
 		ourShader.setFloat("redUniform", 0.5f);
 		ourShader.setFloat("greenUniform",0.5f);
 		ourShader.setFloat("blueUniform", 0.5f);
+		//rotation matrice initialisation
+		glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+		glm::mat4 trans = glm::mat4(1.0f);
+		trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
+		trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+		unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+		
 		glBindVertexArray(VAO);
-		//glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
-		glDrawElements(GL_LINES,nbIndice,GL_UNSIGNED_INT,0);
+		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+		//glDrawElements(GL_LINES,nbIndice,GL_UNSIGNED_INT,0);
 		
 		//swap color buffer and show it on screen
 		glfwSwapBuffers(window);
