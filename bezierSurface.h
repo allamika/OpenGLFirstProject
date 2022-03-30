@@ -1,5 +1,5 @@
-#ifndef BEZIER_CURVE_H
-#define BEZIER_CURVE_H
+#ifndef BEZIER_SURFACE_H
+#define BEZIER_SURFACE_H
   
 #include <string>
 #include <fstream>
@@ -7,9 +7,11 @@
 #include <iostream>
 #include <tuple>
 #include <cmath>
+
+
   
 
-class BezierCurve
+class BezierSurface
 {
 public:
 	//verctices
@@ -17,16 +19,11 @@ public:
 	//indices
 	std::tuple<unsigned int*, int> Indices;
 	// constructor build vertices and indice of bezier curve
-	BezierCurve(unsigned int resolution);
-	
-	BezierCurve(float lengthSegment);
-
-	BezierCurve();
+	BezierSurface(int resolutionU, int resolutionV);
 
 	std::tuple<float*, int> getVertices();
 
 	std::tuple<unsigned int*, int> getIndices();
-	
 private:
 	//return the n's row of pascal triangle
 	unsigned int* pascal(unsigned int row);

@@ -1,6 +1,17 @@
 #include "bezierCurve.h"
 
 
+float vertices[] = {
+     // position        //color
+    -0.75,-0.75f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left
+    -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left
+    -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f,  // top left
+     0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  // top right
+     0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  // bottom right
+     0.75,-0.75f, 0.0f, 0.0f, 1.0f, 0.0f   // bottom right
+    
+};
+
 unsigned int* BezierCurve::pascal(unsigned int row){
 	unsigned int* pascal = (unsigned int*) malloc((row+1) * sizeof(unsigned int));
 	pascal[0] = 1;
@@ -39,17 +50,76 @@ void BezierCurve::calcBezier(float* ptControle, unsigned int nbPtControle, unsig
 	}
 }
 
+BezierCurve::BezierCurve(float lengthSegment){
+	unsigned int nbAttribut = 6;
+	int nbValControle = sizeof(vertices)/sizeof(vertices[0]);
+	int nbPtControle =  nbValControle/nbAttribut;
+	int nbLineControle = ((sizeof(vertices)/sizeof(vertices[0])/nbAttribut) -1);
+	//copy de vertice
+	float* cvertices = (float*)malloc(sizeof(vertices));
+	for(int i = 0; i<sizeof(vertices)/sizeof(vertices[0]); i++){
+		cvertices[i] = vertices[i];
+	}
+	
+	bool valid_length = false;
+	int resolution = 0;
+	float* bezierVertice;
+	while(!valid_length){
+		resolution++;
+		std::free(bezierVertice);
+		bezierVertice = (float*)malloc((resolution-1)*sizeof(float)*nbAttribut);
+		BezierCurve::calcBezier(cvertices, nbPtControle, nbAttribut, resolution, bezierVertice);
+		
+		float lx = std::pow(cvertices[0]-bezierVertice[0],2);
+		float ly = std::pow(cvertices[1]-bezierVertice[1],2);
+		float lz = std::pow(cvertices[2]-bezierVertice[2],2);
+		float length = sqrt( lx + ly + lz );
+		if (length < lengthSegment){
+			valid_length = true;
+		}
+	}
+	
+
+	
+	float* pvertices = (float*)malloc(sizeof(vertices) + (resolution-1)*sizeof(float)*nbAttribut);
+	for(int i = 0; i<nbValControle; i++){
+		pvertices[i] = cvertices[i];
+	}
+	
+	for(int i = 0; i<(resolution-1)*nbAttribut; i++){
+		pvertices[nbValControle+i] = bezierVertice[i];
+	}
+	
+	std::free(bezierVertice);
+	
+	
+	//indice for controle polynome
+	unsigned int * pindices = (unsigned int*) malloc((nbLineControle+resolution) * 2 * sizeof(int));
+	for(int i = 0; i<nbLineControle; i++){
+		pindices[i*2] = i;
+		pindices[i*2+1] = i+1;
+	}
+	
+	//indice for bezier curve
+	pindices[(nbLineControle)*2] = 0;
+	pindices[(nbLineControle)*2+1] = nbLineControle + 1;
+	for(int i = 1; i<resolution-1; i++){
+		pindices[(i+nbLineControle)*2] = nbLineControle + i;
+		pindices[(i+nbLineControle)*2+1] = nbLineControle + i + 1;
+	}
+	pindices[(resolution-1+nbLineControle)*2] = nbLineControle + resolution-1;
+	pindices[(resolution-1+nbLineControle)*2+1] = nbLineControle;
+	
+	
+	
+	Vertices = std::make_tuple(pvertices, ((resolution-1) * nbAttribut + nbValControle) * sizeof(float));
+	Indices =  std::make_tuple(pindices, (resolution+nbLineControle) * 2 * sizeof(int));
+	
+}
+
+
+
 BezierCurve::BezierCurve(unsigned int resolution){
-	float vertices[] = {
-	     // position        //color
-	    -0.75,-0.75f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left
-	    -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left
-	    -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f,  // top left
-	     0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  // top right
-	     0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  // bottom right
-	     0.75,-0.75f, 0.0f, 0.0f, 1.0f, 0.0f   // bottom right
-	    
-	};
 	unsigned int nbAttribut = 6;
 	int nbValControle = sizeof(vertices)/sizeof(vertices[0]);
 	int nbPtControle =  nbValControle/nbAttribut;
@@ -96,3 +166,4 @@ std::tuple<float*, int> BezierCurve::getVertices(){
 std::tuple<unsigned int*, int> BezierCurve::getIndices(){
 	return Indices;
 }
+

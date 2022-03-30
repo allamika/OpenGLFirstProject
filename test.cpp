@@ -14,6 +14,7 @@
 
 #include "shader.h"
 #include "bezierCurve.h"
+#include "bezierSurface.h"
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -224,29 +225,61 @@ void setUpCube(unsigned int* pVAO){
 
 //set up VAO VBO EBO to create a triangle
 void setUpLine(unsigned int* pVAO, unsigned int* pEBO, unsigned int* nbIndice){
-	BezierCurve* ourBezierCurve = new BezierCurve(40); //create bezier curve vertices and indices with n lines
+	unsigned int resolution =400;
+	unsigned int resolutionV = 400;
+	float length = 0.1f;
+	//BezierCurve* ourBezierCurve = new BezierCurve(resolution); //create bezier curve vertices and indices with n lines
+	//BezierCurve* ourBezierCurve = new BezierCurve(length);
+	BezierSurface* ourBezierCurve = new BezierSurface(resolution,resolutionV);
 	std::tuple<float*, int> vertices = ourBezierCurve->getVertices();
 	std::tuple<unsigned int*, int>indices = ourBezierCurve->Indices;
 	
+	int nbVertices = std::get<1>(vertices)/sizeof(float);
+	float* valv = std::get<0>(vertices);
+
 	*nbIndice = std::get<1>(indices)/sizeof(unsigned int);
+	unsigned int* val = std::get<0>(indices);
+	
+	
+	
+	std::cout << "nb alloc: " << *nbIndice << std::endl;
+	for(int i = 0; i<*nbIndice; i++){
+		std::cout << val[i] << ", ";
+		if(i%2 == 1){
+			std::cout << std::endl;
+		}
+	}
+	
+	for(int i = 0; i<nbVertices; i++){
+		std::cout << valv[i] << ", ";
+		if(i%6 == 5){
+			std::cout << std::endl;
+		}
+	}
+	
+	
 	
 	unsigned int VAO, VBO, EBO;
 	
-	
+
 	//VAO and EBO creation
 	glGenVertexArrays(1, &VAO);
+
 	glGenBuffers(1, &EBO);
 	glBindVertexArray(VAO);//select VAO as the active VAO
 	
+
 	//initialize the vertex buffer
 	glGenBuffers(1, &VBO);//create the buffer
 	glBindBuffer(GL_ARRAY_BUFFER, VBO); //select VBO as the active VBO
 	glBufferData(GL_ARRAY_BUFFER, std::get<1>(vertices), std::get<0>(vertices), GL_STATIC_DRAW);//transfer data to the buffer
 	
 	
-	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);//select EBO as the active EBO
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, std::get<1>(indices), std::get<0>(indices), GL_STATIC_DRAW);//transfer data to the buffer
+	
+	
+	
 	
 	//linking vertex attributes
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);//define vertex shader's input (vertex attribut) at position 0 : position attribute
@@ -257,8 +290,6 @@ void setUpLine(unsigned int* pVAO, unsigned int* pEBO, unsigned int* nbIndice){
 	*pVAO = VAO;
 	*pEBO = EBO;
 }
-
-
 
 
 
@@ -300,8 +331,8 @@ int main()
 	unsigned int VAO, EBO, nbIndice;
 	Shader ourShader("./shader/Vertex/coordonateShader.vs", "./shader/unifColor/fragmentShaderUnifColor.fs");
 	//setUpTriangle(&VAO, &EBO);
-	setUpCube(&VAO);
-	//setUpLine(&VAO, &EBO, &nbIndice);
+	//setUpCube(&VAO);
+	setUpLine(&VAO, &EBO, &nbIndice);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);//edge
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);//filled
 	glEnable(GL_DEPTH_TEST);
@@ -373,27 +404,16 @@ int main()
 		//unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
 		//glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 		
-		//Coordinate Uniforms
-		//model
-		//glm::mat4 model = glm::mat4(1.0f);
-		//model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		//model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-		//view
-		//glm::mat4 view = glm::mat4(1.0f);
-		//view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));//note that we're translating the scene in the reverse direction of where we want to move
-		//view = glm::rotate(view, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 0.3f, 0.5f));
-		//projection
-		//const float radius = 20.0f;
-		//float camX = sin(glfwGetTime()) * radius;
-		//float camZ = cos(glfwGetTime()) * radius;
-		//view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));  
+		
 		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 		
+		
+		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 projection = glm::mat4(1.0f);
 		projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 100.0f);
 		//attach uniform value
-		//int modelLoc = glGetUniformLocation(ourShader.ID, "model");
-		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		int modelLoc = glGetUniformLocation(ourShader.ID, "model");
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		int viewLoc = glGetUniformLocation(ourShader.ID, "view");
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 		int projLoc = glGetUniformLocation(ourShader.ID, "projection");
@@ -403,23 +423,23 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindVertexArray(VAO);
 		glBindVertexArray(VAO);
-		for(unsigned int i = 0; i < 10; i++)
-		{
-			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::translate(model, cubePositions[i]);
-			float angle = 20.0f * i; 
-			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-			
-			if (i%3 == 0){
-				model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-			}		
-			
-			ourShader.setMat4("model", model);
-
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
+		//for(unsigned int i = 0; i < 10; i++)
+		//{
+		//	glm::mat4 model = glm::mat4(1.0f);
+		//	model = glm::translate(model, cubePositions[i]);
+		//	float angle = 20.0f * i; 
+		//	model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+		//	
+		//	if (i%3 == 0){
+		//		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+		//	}		
+		//	
+		//	ourShader.setMat4("model", model);
+		//
+		//	glDrawArrays(GL_TRIANGLES, 0, 36);
+		//}
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		//glDrawElements(GL_LINES,nbIndice,GL_UNSIGNED_INT,0);
+		glDrawElements(GL_LINES,nbIndice,GL_UNSIGNED_INT,0);
 		
 		//swap color buffer and show it on screen
 		glfwSwapBuffers(window);
