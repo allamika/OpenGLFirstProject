@@ -225,8 +225,8 @@ void setUpCube(unsigned int* pVAO){
 
 //set up VAO VBO EBO to create a triangle
 void setUpLine(unsigned int* pVAO, unsigned int* pEBO, unsigned int* nbIndice){
-	unsigned int resolution =400;
-	unsigned int resolutionV = 400;
+	unsigned int resolution =40;
+	unsigned int resolutionV = 40;
 	float length = 0.1f;
 	//BezierCurve* ourBezierCurve = new BezierCurve(resolution); //create bezier curve vertices and indices with n lines
 	//BezierCurve* ourBezierCurve = new BezierCurve(length);
@@ -245,7 +245,7 @@ void setUpLine(unsigned int* pVAO, unsigned int* pEBO, unsigned int* nbIndice){
 	std::cout << "nb alloc: " << *nbIndice << std::endl;
 	for(int i = 0; i<*nbIndice; i++){
 		std::cout << val[i] << ", ";
-		if(i%2 == 1){
+		if(i%3 == 2){
 			std::cout << std::endl;
 		}
 	}
@@ -439,7 +439,8 @@ int main()
 		//	glDrawArrays(GL_TRIANGLES, 0, 36);
 		//}
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		glDrawElements(GL_LINES,nbIndice,GL_UNSIGNED_INT,0);
+		//glDrawElements(GL_LINES,nbIndice,GL_UNSIGNED_INT,0);
+		glDrawElements(GL_TRIANGLES,nbIndice,GL_UNSIGNED_INT,0);
 		
 		//swap color buffer and show it on screen
 		glfwSwapBuffers(window);

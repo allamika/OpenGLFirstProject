@@ -130,18 +130,37 @@ BezierSurface::BezierSurface(int resolutionU, int resolutionV){
 	
 	
 	std::cout << "secondAxis done" << std::endl;
-	
-	unsigned int* pindices = (unsigned int*)malloc((resolutionV+1)*(resolutionU)*2*sizeof(unsigned int));
-	std::cout << "nb alloc: " << (resolutionV+1)*(resolutionU)*2 << std::endl;
-	for(int i = 0; i<(resolutionU+1); i++){
-		pindices[i*resolutionV*2] = i*(resolutionV+1);
-		pindices[i*resolutionV*2+1] = i*(resolutionV+1)+1;
+	int nbTriangle = (resolutionV)*(resolutionU)*6;
+	unsigned int* pindices = (unsigned int*)malloc(nbTriangle*sizeof(unsigned int));
+	std::cout << "nb alloc: " << (resolutionV)*(resolutionU-1)*3 << std::endl;
+	for(int i = 0; i<(resolutionU); i++){
+		pindices[i*resolutionV*3] = i*(resolutionV+1);
+		pindices[i*resolutionV*3+1] = i*(resolutionV+1)+1;
+		pindices[i*resolutionV*3+2] = (i+1)*(resolutionV+1);
 		for(int j = 1; j<resolutionV; j++){
-			pindices[(i*resolutionV+j)*2] = i*(resolutionV+1)+j;
-			pindices[(i*resolutionV+j)*2+1] = i*(resolutionV+1)+j+1;
+			pindices[(i*resolutionV+j)*3] = i*(resolutionV+1)+j;
+			pindices[(i*resolutionV+j)*3+1] = i*(resolutionV+1)+j+1;
+			pindices[(i*resolutionV+j)*3+2] = (i+1)*(resolutionV+1)+j;
 			
 		}
 	}
+	
+	
+	for(int i = 0; i<(resolutionU); i++){
+		//pindices[nbTriangle/2 + i*resolutionV*3] = i*(resolutionV+1)+3;
+		//pindices[nbTriangle/2 + i*resolutionV*3+1] = i*(resolutionV+1)-1+3;
+		//pindices[i*resolutionV*3+2] = (i-1)*(resolutionV+1)+1+3;
+		for(int j = 0; j<resolutionV; j++){
+			pindices[nbTriangle/2 + (i*resolutionV+j)*3] = (i+1)*(resolutionV+1)+j+1;
+			std::cout << "truc: " << (i+1)*(resolutionV+1)+j+1 << " at " << nbTriangle/2 + (i*resolutionV+j)*3 << std::endl;
+			pindices[nbTriangle/2 + (i*resolutionV+j)*3+1] = (i+1)*(resolutionV+1)+j;
+			std::cout << "truc: " << (i+1)*(resolutionV+1)+j << " at " << nbTriangle/2 + (i*resolutionV+j)*3+1 << std::endl;
+			pindices[nbTriangle/2 + (i*resolutionV+j)*3+2] = (i)*(resolutionV+1)+j+1;
+			std::cout << "truc: " << (i)*(resolutionV+1)+j+1 << " at " << nbTriangle/2 + (i*resolutionV+j)*3+2 << std::endl;
+			
+		}
+	}
+	
 	
 	
 	
@@ -152,7 +171,7 @@ BezierSurface::BezierSurface(int resolutionU, int resolutionV){
 	free(firstAxec);
 	
 	Vertices = std::make_tuple(secondAxe, ((resolutionV+1) * nbAttribut * (resolutionU+1) * sizeof(float)));
-	Indices =  std::make_tuple(pindices, ((resolutionV+1)*(resolutionU)*2*sizeof(unsigned int)));
+	Indices =  std::make_tuple(pindices, (nbTriangle*sizeof(unsigned int)));
 }
 
 std::tuple<float*, int> BezierSurface::getVertices(){
