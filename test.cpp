@@ -15,6 +15,7 @@
 #include "shader.h"
 #include "bezierCurve.h"
 #include "bezierSurface.h"
+#include "mesh.h"
 
 // settings
 const unsigned int SCR_WIDTH = 800;
