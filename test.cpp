@@ -156,47 +156,47 @@ void setUpTriangle(unsigned int* pVAO, unsigned int* pEBO){
 void setUpCube(unsigned int* pVAO){
 	//initialize triangle's vertex
 	float vertices[] = {
-	    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-	     0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-	     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-	    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	     0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+	     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+	     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+	    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+	    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
 
-	    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-	     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-	    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-	    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	     0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
 
-	    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+	    -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+	    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+	    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+	    -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+	    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
 
-	     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	     0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+	     0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+	     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+	     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+	     0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+	     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
 
-	    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	     0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-	     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+	     0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+	     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+	     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+	    -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+	    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
 
-	    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-	     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-	    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+	    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+	     0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+	     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
 	};
 	
 	unsigned int VAO, VBO, EBO;
@@ -214,9 +214,79 @@ void setUpCube(unsigned int* pVAO){
 	
 	
 	//linking vertex attributes
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);//define vertex shader's input (vertex attribut) at position 0 : position attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);//define vertex shader's input (vertex attribut) at position 0 : position attribute
 	glEnableVertexAttribArray(0);//enable the vertex attribut 0
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3* sizeof(float)));//define vertex shader's input (vertex attribut) at position 1 : color attribute
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3* sizeof(float)));//define vertex shader's input (vertex attribut) at position 1 : normal attribute
+	glEnableVertexAttribArray(1);//enable the vertex attribut 1
+	
+	*pVAO = VAO;
+}
+
+//set up VAO VBO EBO to create a cube
+void setUpLight(unsigned int* pVAO){
+	//initialize triangle's vertex
+	float vertices[] = {
+	    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	     0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+	     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+	     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+	    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+	    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+
+	    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	     0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+
+	    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+	    -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+	    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+	    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+	    -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+	    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+
+	     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+	     0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+	     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+	     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+	     0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+	     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+
+	    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+	     0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+	     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+	     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+	    -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+	    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+
+	    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+	     0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+	     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+	};
+	
+	unsigned int VAO, VBO, EBO;
+	
+	
+	//VAO and EBO creation
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);//select VAO as the active VAO
+	
+	//initialize the vertex buffer
+	glGenBuffers(1, &VBO);//create the buffer
+	glBindBuffer(GL_ARRAY_BUFFER, VBO); //select VBO as the active VBO
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);//transfer data to the buffer
+	
+	
+	
+	//linking vertex attributes
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);//define vertex shader's input (vertex attribut) at position 0 : position attribute
+	glEnableVertexAttribArray(0);//enable the vertex attribut 0
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3* sizeof(float)));//define vertex shader's input (vertex attribut) at position 1 : normal attribute
 	glEnableVertexAttribArray(1);//enable the vertex attribut 1
 	
 	*pVAO = VAO;
@@ -328,11 +398,13 @@ int main()
 	
 		
 	//generate pipeline
-	unsigned int VAO, EBO, nbIndice;
-	Shader ourShader("./shader/Vertex/coordonateShader.vs", "./shader/unifColor/fragmentShaderUnifColor.fs");
+	unsigned int lightVAO, VAO, EBO, nbIndice;
+	Shader ourShader("./shader/Vertex/lighted.vs", "./shader/Fragment/lighted.fs");
+	Shader lightShader("./shader/Vertex/light.vs", "./shader/Fragment/light.fs");
 	//setUpTriangle(&VAO, &EBO);
-	//setUpCube(&VAO);
-	setUpLine(&VAO, &EBO, &nbIndice);
+	setUpCube(&VAO);
+	setUpLight(&lightVAO);
+	//setUpLine(&VAO, &EBO, &nbIndice);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);//edge
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);//filled
 	glEnable(GL_DEPTH_TEST);
@@ -362,7 +434,8 @@ int main()
 	//glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
 	//glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
 
-	
+	glm::mat4 model = glm::mat4(1.0f);
+	glm::mat4 projection = glm::mat4(1.0f);
 	
 	//render loop
 	while(!glfwWindowShouldClose(window))
@@ -391,56 +464,51 @@ int main()
 		
 		
 		//render triangles
+		
 		ourShader.use();
-		ourShader.setFloat("redUniform", 0.5f);
-		ourShader.setFloat("greenUniform",0.5f);
-		ourShader.setFloat("blueUniform", 0.5f);
-		
-		//rotation matrice initialisation
-		//glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-		//glm::mat4 trans = glm::mat4(1.0f);
-		//trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
-		//trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
-		//unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
-		//glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
-		
+		ourShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+		ourShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+		ourShader.setVec3("lightPos", 1.2f, 1.0f, 2.0f);
+		ourShader.setVec3("viewPos", cameraPos.x, cameraPos.y, cameraPos.z);
 		
 		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 		
 		
-		glm::mat4 model = glm::mat4(1.0f);
-		glm::mat4 projection = glm::mat4(1.0f);
 		projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 100.0f);
 		//attach uniform value
-		int modelLoc = glGetUniformLocation(ourShader.ID, "model");
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		int viewLoc = glGetUniformLocation(ourShader.ID, "view");
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-		int projLoc = glGetUniformLocation(ourShader.ID, "projection");
-		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+		
+		model = glm::mat4(1.0f);
+		ourShader.setMat4("model",model);
+		ourShader.setMat4("view",view);
+		ourShader.setMat4("projection",projection);
 		
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindVertexArray(VAO);
-		glBindVertexArray(VAO);
-		//for(unsigned int i = 0; i < 10; i++)
-		//{
-		//	glm::mat4 model = glm::mat4(1.0f);
-		//	model = glm::translate(model, cubePositions[i]);
-		//	float angle = 20.0f * i; 
-		//	model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-		//	
-		//	if (i%3 == 0){
-		//		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-		//	}		
-		//	
-		//	ourShader.setMat4("model", model);
-		//
-		//	glDrawArrays(GL_TRIANGLES, 0, 36);
-		//}
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		
+		lightShader.use();
+		lightShader.setFloat("redUniform", 1.0f);
+		lightShader.setFloat("greenUniform",0.5f);
+		lightShader.setFloat("blueUniform", 0.5f);
+		
+		glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, lightPos);
+		model = glm::scale(model, glm::vec3(0.2f));
+		lightShader.setMat4("model",model);
+		lightShader.setMat4("view",view);
+		lightShader.setMat4("projection",projection);
+		
+		glBindVertexArray(lightVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		
+		//glBindVertexArray(VAO);
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
+
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		//glDrawElements(GL_LINES,nbIndice,GL_UNSIGNED_INT,0);
-		glDrawElements(GL_TRIANGLES,nbIndice,GL_UNSIGNED_INT,0);
+		//glDrawElements(GL_TRIANGLES,nbIndice,GL_UNSIGNED_INT,0);
 		
 		//swap color buffer and show it on screen
 		glfwSwapBuffers(window);
