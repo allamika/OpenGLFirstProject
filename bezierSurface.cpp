@@ -64,15 +64,71 @@ void BezierSurface::calcBezier(float* ptControle, unsigned int nbPtControle, uns
 	free(pascal);
 }
 
+void BezierSurface::calcNormal(float* vertice, unsigned int lengthVertice, unsigned int* indice, unsigned int lengthIndice, unsigned int nbAttribut, unsigned int offsetNormal){
+	
+	std::cout << "start normal cumputation : for " << lengthIndice/3 << " triangle on " << lengthVertice << " point" << std::endl;	
+	
+	unsigned int* countNormal = (unsigned int*)malloc(lengthVertice*sizeof(unsigned int));
+	for(int i = 0; i < lengthVertice;i++){
+		countNormal[i] = 0;
+	}
+	
+	for(int i = 0; i < lengthIndice/3; i++){
+		int ip1 = indice[i*3] * nbAttribut;
+		int ip2 = indice[i*3+1] * nbAttribut;
+		int ip3 = indice[i*3+2] * nbAttribut;
+		glm::vec3 U(vertice[ip2] - vertice[ip1], vertice[ip2+1] - vertice[ip1+1], vertice[ip2+2] - vertice[ip1+2]);
+		glm::vec3 V(vertice[ip3] - vertice[ip1], vertice[ip3+1] - vertice[ip1+1], vertice[ip3+2] - vertice[ip1+2]);
+		float Nx = U.y*V.z + U.z*V.y;
+		float Ny = U.z*V.x + U.x*V.z;
+		float Nz = U.x*V.y + U.y*V.x;
+		
+		float norm = sqrt( Nx*Nx + Ny*Ny + Nz*Nz );
+		
+		if(norm != 0){
+			Nx /= norm;
+			Ny /= norm;
+			Nz /= norm;
+		}
+		
+		vertice[ip1 + offsetNormal] -= Nx;
+		vertice[ip2 + offsetNormal] -= Nx;
+		vertice[ip3 + offsetNormal] -= Nx;
+		vertice[ip1 + offsetNormal+1] += Ny;
+		vertice[ip2 + offsetNormal+1] += Ny;
+		vertice[ip3 + offsetNormal+1] += Ny;
+		vertice[ip1 + offsetNormal+2] += Nz;
+		vertice[ip2 + offsetNormal+2] += Nz;
+		vertice[ip3 + offsetNormal+2] += Nz;
+		
+		countNormal[ip1/nbAttribut]++;
+		countNormal[ip2/nbAttribut]++;
+		countNormal[ip3/nbAttribut]++;
+		
+		std::cout << ip1 + offsetNormal+2 << " [" << ip1/nbAttribut << ", " << ip2/nbAttribut << ", " << ip3/nbAttribut << "]";
+		std::cout << " [" << Nx << ", " << Ny << ", " << Nz << "]" << std::endl;
+	}
+	
+	for(int i = 0; i < lengthVertice; i++){
+		vertice[i*nbAttribut + offsetNormal] /= countNormal[i];
+		vertice[i*nbAttribut + offsetNormal+1] /= countNormal[i];
+		vertice[i*nbAttribut + offsetNormal+2] /= countNormal[i];
+		std::cout << "mean: " << " [" << i*nbAttribut + offsetNormal << ", " << i*nbAttribut + offsetNormal+1 << ", " << i*nbAttribut + offsetNormal+2 << "]" << std::endl;
+	}
+	free(countNormal);
+	std::cout << "normal cumputation done" << std::endl;
+}
+
 
 BezierSurface::BezierSurface(int resolutionU, int resolutionV){
 	unsigned int nbAttribut = 6;
+	unsigned int offsetNormal = 3;
 	unsigned int nbControleLine = 3;
 	unsigned int nbPtC = sizeof(verticesS)/sizeof(float)/nbAttribut;
-	std::cout << "sizeof(verticesS): " << sizeof(verticesS) << std::endl;
-	std::cout << "nbPtC: " << nbPtC << std::endl;
+	//std::cout << "sizeof(verticesS): " << sizeof(verticesS) << std::endl;
+	//std::cout << "nbPtC: " << nbPtC << std::endl;
 	unsigned int nbPtCInLine = nbPtC / nbControleLine;
-	std::cout << "nbPtCInLine: " << nbPtCInLine << std::endl;
+	//std::cout << "nbPtCInLine: " << nbPtCInLine << std::endl;
 	float* firstAxe = (float*)malloc((resolutionU+1) * nbAttribut * nbControleLine * sizeof(float));
 	
 	float* cvertices = (float*)malloc(sizeof(verticesS));
@@ -102,16 +158,16 @@ BezierSurface::BezierSurface(int resolutionU, int resolutionV){
 	
 	for(int i = 0; i<(resolutionU+1) * nbAttribut * nbControleLine; i++){
 		if(i%6 == 0){
-			std::cout << "[" << firstAxec[i] << ", ";
+			//std::cout << "[" << firstAxec[i] << ", ";
 		}
 		else if(i%6 == 5){
-			std::cout << firstAxec[i] << "]";
+			//std::cout << firstAxec[i] << "]";
 			if(i%18 == 17){
-				std::cout << std::endl;
+				//std::cout << std::endl;
 			}
 		}
 		else{
-			std::cout << firstAxec[i] <<  ", ";
+			//std::cout << firstAxec[i] <<  ", ";
 		}
 		
 	}
@@ -129,10 +185,10 @@ BezierSurface::BezierSurface(int resolutionU, int resolutionV){
 	}
 	
 	
-	std::cout << "secondAxis done" << std::endl;
+	//std::cout << "secondAxis done" << std::endl;
 	int nbTriangle = (resolutionV)*(resolutionU)*6;
 	unsigned int* pindices = (unsigned int*)malloc(nbTriangle*sizeof(unsigned int));
-	std::cout << "nb alloc: " << (resolutionV)*(resolutionU-1)*3 << std::endl;
+	//std::cout << "nb alloc: " << (resolutionV)*(resolutionU-1)*3 << std::endl;
 	for(int i = 0; i<(resolutionU); i++){
 		pindices[i*resolutionV*3] = i*(resolutionV+1);
 		pindices[i*resolutionV*3+1] = i*(resolutionV+1)+1;
@@ -152,19 +208,21 @@ BezierSurface::BezierSurface(int resolutionU, int resolutionV){
 		//pindices[i*resolutionV*3+2] = (i-1)*(resolutionV+1)+1+3;
 		for(int j = 0; j<resolutionV; j++){
 			pindices[nbTriangle/2 + (i*resolutionV+j)*3] = (i+1)*(resolutionV+1)+j+1;
-			std::cout << "truc: " << (i+1)*(resolutionV+1)+j+1 << " at " << nbTriangle/2 + (i*resolutionV+j)*3 << std::endl;
+			//std::cout << "truc: " << (i+1)*(resolutionV+1)+j+1 << " at " << nbTriangle/2 + (i*resolutionV+j)*3 << std::endl;
 			pindices[nbTriangle/2 + (i*resolutionV+j)*3+1] = (i+1)*(resolutionV+1)+j;
-			std::cout << "truc: " << (i+1)*(resolutionV+1)+j << " at " << nbTriangle/2 + (i*resolutionV+j)*3+1 << std::endl;
+			//std::cout << "truc: " << (i+1)*(resolutionV+1)+j << " at " << nbTriangle/2 + (i*resolutionV+j)*3+1 << std::endl;
 			pindices[nbTriangle/2 + (i*resolutionV+j)*3+2] = (i)*(resolutionV+1)+j+1;
-			std::cout << "truc: " << (i)*(resolutionV+1)+j+1 << " at " << nbTriangle/2 + (i*resolutionV+j)*3+2 << std::endl;
+			//std::cout << "truc: " << (i)*(resolutionV+1)+j+1 << " at " << nbTriangle/2 + (i*resolutionV+j)*3+2 << std::endl;
 			
 		}
 	}
 	
+	calcNormal(secondAxe, (resolutionV+1) * (resolutionU+1), pindices, nbTriangle, nbAttribut, offsetNormal);
 	
 	
 	
-	std::cout << "ok" << std::endl;
+	
+	//std::cout << "ok" << std::endl;
 	
 	free(cvertices);
 	free(firstAxe);

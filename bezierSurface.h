@@ -7,6 +7,7 @@
 #include <iostream>
 #include <tuple>
 #include <cmath>
+#include <glm/glm.hpp>
 
 
   
@@ -29,6 +30,8 @@ private:
 	unsigned int* pascal(unsigned int row);
 	
 	void calcBezier(float* ptControle, unsigned int nbPtControle, unsigned int nbAttribut, unsigned int resolution, float* targetVertice);
+	
+	void calcNormal(float* vertice, unsigned int lengthVertice, unsigned int* indice, unsigned int lengthIndice, unsigned int nbAttribut, unsigned int offsetNormal);
 };
   
 #endif

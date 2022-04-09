@@ -154,73 +154,121 @@ void setUpTriangle(unsigned int* pVAO, unsigned int* pEBO){
 }
 
 //set up VAO VBO EBO to create a cube
-void setUpCube(unsigned int* pVAO){
+Mesh setUpCube(){
 	//initialize triangle's vertex
-	float vertices[] = {
-	    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-	     0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-	     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-	     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-	    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-	    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+	float pos[] = {
+	    -0.5f, -0.5f, -0.5f,
+	     0.5f, -0.5f, -0.5f, 
+	     0.5f,  0.5f, -0.5f, 
+	     0.5f,  0.5f, -0.5f, 
+	    -0.5f,  0.5f, -0.5f, 
+	    -0.5f, -0.5f, -0.5f, 
 
-	    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-	     0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-	     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-	     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-	    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-	    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+	    -0.5f, -0.5f,  0.5f,
+	     0.5f, -0.5f,  0.5f,
+	     0.5f,  0.5f,  0.5f,
+	     0.5f,  0.5f,  0.5f,
+	    -0.5f,  0.5f,  0.5f,
+	    -0.5f, -0.5f,  0.5f,
 
-	    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-	    -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-	    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-	    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-	    -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-	    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+	    -0.5f,  0.5f,  0.5f,
+	    -0.5f,  0.5f, -0.5f,
+	    -0.5f, -0.5f, -0.5f,
+	    -0.5f, -0.5f, -0.5f,
+	    -0.5f, -0.5f,  0.5f,
+	    -0.5f,  0.5f,  0.5f,
 
-	     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-	     0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-	     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-	     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-	     0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-	     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+	     0.5f,  0.5f,  0.5f,
+	     0.5f,  0.5f, -0.5f,
+	     0.5f, -0.5f, -0.5f,
+	     0.5f, -0.5f, -0.5f,
+	     0.5f, -0.5f,  0.5f,
+	     0.5f,  0.5f,  0.5f,
 
-	    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-	     0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-	     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-	     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-	    -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-	    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+	    -0.5f, -0.5f, -0.5f,
+	     0.5f, -0.5f, -0.5f,
+	     0.5f, -0.5f,  0.5f,
+	     0.5f, -0.5f,  0.5f,
+	    -0.5f, -0.5f,  0.5f,
+	    -0.5f, -0.5f, -0.5f,
 
-	    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-	     0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-	     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-	     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-	    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-	    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+	    -0.5f,  0.5f, -0.5f,
+	     0.5f,  0.5f, -0.5f,
+	     0.5f,  0.5f,  0.5f,
+	     0.5f,  0.5f,  0.5f,
+	    -0.5f,  0.5f,  0.5f,
+	    -0.5f,  0.5f, -0.5f
 	};
 	
-	unsigned int VAO, VBO, EBO;
+	float normal[] = {
+		
+	     0.0f,  0.0f, -1.0f,
+	     0.0f,  0.0f, -1.0f, 
+	     0.0f,  0.0f, -1.0f, 
+	     0.0f,  0.0f, -1.0f, 
+	     0.0f,  0.0f, -1.0f, 
+	     0.0f,  0.0f, -1.0f, 
+
+	     0.0f,  0.0f,  1.0f,
+	     0.0f,  0.0f,  1.0f,
+	     0.0f,  0.0f,  1.0f,
+	     0.0f,  0.0f,  1.0f,
+	     0.0f,  0.0f,  1.0f,
+	     0.0f,  0.0f,  1.0f,
+
+	    -1.0f,  0.0f,  0.0f,
+	    -1.0f,  0.0f,  0.0f,
+	    -1.0f,  0.0f,  0.0f,
+	    -1.0f,  0.0f,  0.0f,
+	    -1.0f,  0.0f,  0.0f,
+	    -1.0f,  0.0f,  0.0f,
+
+	     1.0f,  0.0f,  0.0f,
+	     1.0f,  0.0f,  0.0f,
+	     1.0f,  0.0f,  0.0f,
+	     1.0f,  0.0f,  0.0f,
+	     1.0f,  0.0f,  0.0f,
+	     1.0f,  0.0f,  0.0f,
+
+	     0.0f, -1.0f,  0.0f,
+	     0.0f, -1.0f,  0.0f,
+	     0.0f, -1.0f,  0.0f,
+	     0.0f, -1.0f,  0.0f,
+	     0.0f, -1.0f,  0.0f,
+	     0.0f, -1.0f,  0.0f,
+
+	     0.0f,  1.0f,  0.0f,
+	     0.0f,  1.0f,  0.0f,
+	     0.0f,  1.0f,  0.0f,
+	     0.0f,  1.0f,  0.0f,
+	     0.0f,  1.0f,  0.0f,
+	     0.0f,  1.0f,  0.0f
+	}; 
+	
+	std::vector<Vertex> vVertex;
+	
+	for(int i = 0; i < sizeof(pos) / sizeof(pos[0]) / 3; i++){
+		glm::vec3 vpos(pos[i*3], pos[i*3+1], pos[i*3+2]);
+		glm::vec3 vnormal(normal[i*3], normal[i*3+1], normal[i*3+2]);
+		
+		Vertex* vertex = new Vertex;
+		vertex->Position = vpos;
+		vertex->Normal = vnormal;
+		
+		vVertex.push_back(*vertex);
+	}
+	
+	std::vector<unsigned int> vIndices;
+	
+	for(int i = 0; i < sizeof(pos) / sizeof(pos[0]); i++){
+		vIndices.push_back(i);
+	}
 	
 	
-	//VAO and EBO creation
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);//select VAO as the active VAO
 	
-	//initialize the vertex buffer
-	glGenBuffers(1, &VBO);//create the buffer
-	glBindBuffer(GL_ARRAY_BUFFER, VBO); //select VBO as the active VBO
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);//transfer data to the buffer
+	Mesh meshCube(vVertex, vIndices);
 	
-	
-	
-	//linking vertex attributes
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);//define vertex shader's input (vertex attribut) at position 0 : position attribute
-	glEnableVertexAttribArray(0);//enable the vertex attribut 0
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3* sizeof(float)));//define vertex shader's input (vertex attribut) at position 1 : normal attribute
-	glEnableVertexAttribArray(1);//enable the vertex attribut 1
-	
-	*pVAO = VAO;
+	return meshCube;
 }
 
 //set up VAO VBO EBO to create a cube
@@ -349,7 +397,7 @@ void setUpLine(unsigned int* pVAO, unsigned int* pEBO, unsigned int* nbIndice){
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);//select EBO as the active EBO
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, std::get<1>(indices), std::get<0>(indices), GL_STATIC_DRAW);//transfer data to the buffer
 	
-	
+	std::cout << "ok" << std::endl;
 	
 	
 	//linking vertex attributes
@@ -357,6 +405,10 @@ void setUpLine(unsigned int* pVAO, unsigned int* pEBO, unsigned int* nbIndice){
 	glEnableVertexAttribArray(0);//enable the vertex attribut 0
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3* sizeof(float)));//define vertex shader's input (vertex attribut) at position 1 : color attribute
 	glEnableVertexAttribArray(1);//enable the vertex attribut 1
+	
+	
+	std::cout << "ok" << std::endl;
+	
 	
 	*pVAO = VAO;
 	*pEBO = EBO;
@@ -403,16 +455,23 @@ int main()
 	Shader ourShader("./shader/Vertex/lighted.vs", "./shader/Fragment/lighted.fs");
 	Shader lightShader("./shader/Vertex/light.vs", "./shader/Fragment/light.fs");
 	//setUpTriangle(&VAO, &EBO);
-	setUpCube(&VAO);
-	setUpLight(&lightVAO);
-	//setUpLine(&VAO, &EBO, &nbIndice);
+	Mesh meshCube = setUpCube();
+	Mesh meshLight = setUpCube();
+	setUpLine(&VAO, &EBO, &nbIndice);
+	
+	std::cout << "ok1" << std::endl;
+	
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);//edge
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);//filled
 	glEnable(GL_DEPTH_TEST);
+	std::cout << "ok2" << std::endl;
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
+	std::cout << "ok3" << std::endl;
 	glfwSetCursorPosCallback(window, mouse_callback);
+	std::cout << "ok4" << std::endl;
 	glfwSetScrollCallback(window, scroll_callback);
 	
+	std::cout << "ok1" << std::endl;
 	
 	glm::vec3 cubePositions[] = {
 	    glm::vec3( 0.0f,  0.0f,  0.0f), 
@@ -438,6 +497,7 @@ int main()
 	glm::mat4 model = glm::mat4(1.0f);
 	glm::mat4 projection = glm::mat4(1.0f);
 	
+	std::cout << "start loop" << std::endl;	
 	//render loop
 	while(!glfwWindowShouldClose(window))
 	{
@@ -485,8 +545,13 @@ int main()
 		
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//meshCube.Draw(ourShader);
 		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		
+		
+		glDrawElements(GL_TRIANGLES,nbIndice,GL_UNSIGNED_INT,0);
+		//glDrawElements(GL_LINES,nbIndice,GL_UNSIGNED_INT,0);
+		
 		
 		lightShader.use();
 		lightShader.setFloat("redUniform", 1.0f);
@@ -501,14 +566,16 @@ int main()
 		lightShader.setMat4("view",view);
 		lightShader.setMat4("projection",projection);
 		
-		glBindVertexArray(lightVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
 		
-		//glBindVertexArray(VAO);
+		meshLight.Draw(ourShader);
+		
+		////ourShader.use();
+		
+		////glBindVertexArray(VAO);
 		//glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		//glDrawElements(GL_LINES,nbIndice,GL_UNSIGNED_INT,0);
+		////glDrawElements(GL_LINES,nbIndice,GL_UNSIGNED_INT,0);
 		//glDrawElements(GL_TRIANGLES,nbIndice,GL_UNSIGNED_INT,0);
 		
 		//swap color buffer and show it on screen
@@ -517,9 +584,13 @@ int main()
 		glfwPollEvents();    
 	}
 	
+	std::cout << "on free tout" << std::endl;
 	
 	//free all GLFW's resources that were allocated
 	glfwTerminate();
+	
+	std::cout << "tout finis bien" << std::endl;
 
 	return 0;
 }
+
