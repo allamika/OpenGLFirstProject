@@ -37,8 +37,31 @@ void Mesh::setupMesh(){
 	glBindVertexArray(0);
 }
 
+
+void Mesh::switchToLine(){
+	this->mode = 1;
+}
+void Mesh::switchToTriangle(){
+	this->mode = 0;
+}
+
 void Mesh::Draw(Shader &shader){
 	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+	if (this->mode = 1){
+		glDrawElements(GL_LINES, indices.size(), GL_UNSIGNED_INT, 0);
+	}
+	else{
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+	}
 	glBindVertexArray(0);
 }
+
+
+
+
+
+
+
+
+
+

@@ -344,9 +344,9 @@ void setUpLight(unsigned int* pVAO){
 
 
 //set up VAO VBO EBO to create a triangle
-void setUpLine(unsigned int* pVAO, unsigned int* pEBO, unsigned int* nbIndice){
-	unsigned int resolution =5;
-	unsigned int resolutionV = 4;
+Mesh setUpSurface(){
+	unsigned int resolution =40;
+	unsigned int resolutionV = 30;
 	float length = 0.1f;
 	//BezierCurve* ourBezierCurve = new BezierCurve(resolution); //create bezier curve vertices and indices with n lines
 	//BezierCurve* ourBezierCurve = new BezierCurve(length);
@@ -357,64 +357,81 @@ void setUpLine(unsigned int* pVAO, unsigned int* pEBO, unsigned int* nbIndice){
 	int nbVertices = std::get<1>(vertices)/sizeof(float);
 	float* valv = std::get<0>(vertices);
 
-	*nbIndice = std::get<1>(indices)/sizeof(unsigned int);
+	int nbIndice = std::get<1>(indices)/sizeof(unsigned int);
 	unsigned int* val = std::get<0>(indices);
 	
+	std::vector<Vertex> vVertex;
 	
+	for(int i = 0; i < nbVertices ; i++){
 	
-	//std::cout << "nb alloc: " << *nbIndice << std::endl;
-	for(int i = 0; i<*nbIndice; i++){
-	//	std::cout << val[i] << ", ";
-		if(i%3 == 2){
-	//		std::cout << std::endl;
-		}
+		glm::vec3 vpos(valv[i*8], valv[i*8+1], valv[i*8+2]);
+		glm::vec3 vnormal(valv[i*8+3], valv[i*8+4], valv[i*8+5]);
+		glm::vec2 vparaCoord(valv[i*8+6], valv[i*8+7]);
+		
+		Vertex* vertex = new Vertex;
+		vertex->Position = vpos;
+		vertex->Normal = vnormal;
+		vertex->ParaCoord = vparaCoord;
+		
+		vVertex.push_back(*vertex);
 	}
 	
-	for(int i = 0; i<nbVertices; i++){
-		std::cout << valv[i] << ", ";
-		if(i%8 == 7){
-			std::cout << std::endl;
-		}
+	std::vector<unsigned int> vIndices;
+	
+	for(int i = 0; i < nbIndice; i++){
+		vIndices.push_back(val[i]);
 	}
 	
 	
 	
-	unsigned int VAO, VBO, EBO;
+	Mesh meshBezierSurface(vVertex, vIndices);
 	
+	return meshBezierSurface;
+}
 
-	//VAO and EBO creation
-	glGenVertexArrays(1, &VAO);
 
-	glGenBuffers(1, &EBO);
-	glBindVertexArray(VAO);//select VAO as the active VAO
+Mesh setUpCurve(){
+	unsigned int resolution = 40;
+	float length = 0.1f;
+	BezierCurve* ourBezierCurve = new BezierCurve(resolution); //create bezier curve vertices and indices with n lines
+	//BezierCurve* ourBezierCurve = new BezierCurve(length);
+	//BezierSurface* ourBezierCurve = new BezierSurface(resolution,resolutionV);
+	std::tuple<float*, int> vertices = ourBezierCurve->getVertices();
+	std::tuple<unsigned int*, int>indices = ourBezierCurve->Indices;
 	
+	int nbVertices = std::get<1>(vertices)/sizeof(float);
+	float* valv = std::get<0>(vertices);
 
-	//initialize the vertex buffer
-	glGenBuffers(1, &VBO);//create the buffer
-	glBindBuffer(GL_ARRAY_BUFFER, VBO); //select VBO as the active VBO
-	glBufferData(GL_ARRAY_BUFFER, std::get<1>(vertices), std::get<0>(vertices), GL_STATIC_DRAW);//transfer data to the buffer
+	int nbIndice = std::get<1>(indices)/sizeof(unsigned int);
+	unsigned int* val = std::get<0>(indices);
+	
+	std::vector<Vertex> vVertex;
+	
+	for(int i = 0; i < nbVertices ; i++){
+	
+		glm::vec3 vpos(valv[i*6], valv[i*6+1], valv[i*6+2]);
+		glm::vec3 vnormal(valv[i*6+3], valv[i*6+4], valv[i*6+5]);
+		
+		Vertex* vertex = new Vertex;
+		vertex->Position = vpos;
+		vertex->Normal = vnormal;
+		vertex->ParaCoord = glm::vec2(0.0f);
+		
+		vVertex.push_back(*vertex);
+	}
+	
+	std::vector<unsigned int> vIndices;
+	
+	for(int i = 0; i < nbIndice; i++){
+		vIndices.push_back(val[i]);
+	}
 	
 	
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);//select EBO as the active EBO
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, std::get<1>(indices), std::get<0>(indices), GL_STATIC_DRAW);//transfer data to the buffer
 	
-	//std::cout << "ok" << std::endl;
+	Mesh meshBezierCurve(vVertex, vIndices);
+	meshBezierCurve.switchToLine();
 	
-	
-	//linking vertex attributes
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);//define vertex shader's input (vertex attribut) at position 0 : position attribute
-	glEnableVertexAttribArray(0);//enable the vertex attribut 0
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3* sizeof(float)));//define vertex shader's input (vertex attribut) at position 1 : color attribute
-	glEnableVertexAttribArray(1);//enable the vertex attribut 1
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6* sizeof(float)));//define vertex shader's input (vertex attribut) at position 1 : color attribute
-	glEnableVertexAttribArray(2);//enable the vertex attribut 2
-	
-	
-	//std::cout << "ok" << std::endl;
-	
-	
-	*pVAO = VAO;
-	*pEBO = EBO;
+	return meshBezierCurve;
 }
 
 
@@ -455,12 +472,14 @@ int main()
 		
 	//generate pipeline
 	unsigned int lightVAO, VAO, EBO, nbIndice;
-	Shader ourShader("./shader/Vertex/para2D.vs", "./shader/Fragment/para2D.fs");
+	//Shader ourShader("./shader/Vertex/para2D.vs", "./shader/Fragment/para2D.fs");
+	Shader ourShader("./shader/Vertex/coordonateShader.vs", "./shader/Fragment/gray.fs");
 	Shader lightShader("./shader/Vertex/light.vs", "./shader/Fragment/light.fs");
 	//setUpTriangle(&VAO, &EBO);
 	Mesh meshCube = setUpCube();
 	Mesh meshLight = setUpCube();
-	setUpLine(&VAO, &EBO, &nbIndice);
+	Mesh meshBezierSurface = setUpSurface();
+	Mesh meshBezierCurve = setUpCurve();
 	
 	//std::cout << "ok1" << std::endl;
 	
@@ -549,8 +568,10 @@ int main()
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//meshCube.Draw(ourShader);
-		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES,nbIndice,GL_UNSIGNED_INT,0);
+		//meshBezierSurface.Draw(ourShader);
+		meshBezierCurve.Draw(ourShader);
+		//glBindVertexArray(VAO);
+		//glDrawElements(GL_TRIANGLES,nbIndice,GL_UNSIGNED_INT,0);
 		//glDrawElements(GL_LINES,nbIndice,GL_UNSIGNED_INT,0);
 		
 		

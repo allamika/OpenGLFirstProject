@@ -121,10 +121,10 @@ void BezierSurface::calcNormal(float* vertice, unsigned int lengthVertice, unsig
 
 
 void BezierSurface::calcParaCoord(float* vertice, int resolutionU, int resolutionV, unsigned int nbAttribut, unsigned int offsetParaCoord){
-	std::cout << "calcul para sur: " << resolutionU << ", " << resolutionV << std::endl;
+	//std::cout << "calcul para sur: " << resolutionU << ", " << resolutionV << std::endl;
 	for(int i = 0; i< resolutionU+1; i++){
 		for(int j = 0; j< resolutionV+1; j++){
-			std::cout << "cible: " << nbAttribut*(resolutionV+1)*i + nbAttribut*j + offsetParaCoord << ", value: " << (float)i/(float)resolutionU << std::endl;
+			//std::cout << "cible: " << nbAttribut*(resolutionV+1)*i + nbAttribut*j + offsetParaCoord << ", value: " << (float)i/(float)resolutionU << std::endl;
 			vertice[nbAttribut*(resolutionV+1)*i + nbAttribut*j + offsetParaCoord] = (float)i/(float)resolutionU;
 			vertice[nbAttribut*(resolutionV+1)*i + nbAttribut*j + offsetParaCoord+1] = (float)j/(float)resolutionV;
 		}

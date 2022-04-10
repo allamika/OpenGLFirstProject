@@ -18,11 +18,13 @@ class Mesh {
         std::vector<unsigned int> indices;
 
         Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
+        void switchToLine();
+        void switchToTriangle();
         void Draw(Shader &shader);
     private:
         //  render data
         unsigned int VAO, VBO, EBO;
-
+        unsigned int mode = 0;
         void setupMesh();
 };  
 
