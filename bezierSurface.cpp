@@ -2,26 +2,26 @@
 
 float verticesS[] = {
      // position        //color
-    -0.75,-0.75f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left
-    -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left
-    -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f,  // top left
-     0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  // top right
-     0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  // bottom right
-     0.75,-0.75f, 0.0f, 0.0f, 1.0f, 0.0f,  // bottom right
+    -0.75,-0.75f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,  // bottom left
+    -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,   // bottom left
+    -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,   // top left
+     0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,   // top right
+     0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,   // bottom right
+     0.75,-0.75f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,   // bottom right
     
-     -0.75,-1.75f, 1.0f, 1.0f, 0.0f, 0.0f,  // bottom left
-    -0.5f, -1.5f, 1.0f, 1.0f, 0.0f, 0.0f,  // bottom left
-    -0.5f,  1.5f, 1.0f, 0.0f, 0.0f, 1.0f,  // top left
-     0.5f,  1.5f, 1.0f, 1.0f, 0.0f, 0.0f,  // top right
-     0.5f, -1.5f, 1.0f, 0.0f, 1.0f, 0.0f,  // bottom right
-     0.75,-1.75f, 1.0f, 0.0f, 1.0f, 0.0f,  // bottom right
+    -0.75,-1.75f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,   // bottom left
+    -0.5f, -1.5f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,   // bottom left
+    -0.5f,  1.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,   // top left
+     0.5f,  1.5f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,   // top right
+     0.5f, -1.5f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,   // bottom right
+     0.75,-1.75f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,   // bottom right
      
-    -0.75,-0.75f, 2.0f, 1.0f, 0.0f, 0.0f,  // bottom left
-    -0.5f, -0.5f, 2.0f, 1.0f, 0.0f, 0.0f,  // bottom left
-    -0.5f,  0.5f, 2.0f, 0.0f, 0.0f, 1.0f,  // top left
-     0.5f,  0.5f, 2.0f, 1.0f, 0.0f, 0.0f,  // top right
-     0.5f, -0.5f, 2.0f, 0.0f, 1.0f, 0.0f,  // bottom right
-     0.75,-0.75f, 2.0f, 0.0f, 1.0f, 0.0f,  // bottom right
+    -0.75,-0.75f, 2.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,   // bottom left
+    -0.5f, -0.5f, 2.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,   // bottom left
+    -0.5f,  0.5f, 2.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,   // top left
+     0.5f,  0.5f, 2.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,   // top right
+     0.5f, -0.5f, 2.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,  // bottom right
+     0.75,-0.75f, 2.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,  // bottom right
 };
 
 unsigned int* BezierSurface::pascal(unsigned int row){
@@ -66,7 +66,7 @@ void BezierSurface::calcBezier(float* ptControle, unsigned int nbPtControle, uns
 
 void BezierSurface::calcNormal(float* vertice, unsigned int lengthVertice, unsigned int* indice, unsigned int lengthIndice, unsigned int nbAttribut, unsigned int offsetNormal){
 	
-	std::cout << "start normal cumputation : for " << lengthIndice/3 << " triangle on " << lengthVertice << " point" << std::endl;	
+	//std::cout << "start normal cumputation : for " << lengthIndice/3 << " triangle on " << lengthVertice << " point" << std::endl;	
 	
 	unsigned int* countNormal = (unsigned int*)malloc(lengthVertice*sizeof(unsigned int));
 	for(int i = 0; i < lengthVertice;i++){
@@ -105,24 +105,36 @@ void BezierSurface::calcNormal(float* vertice, unsigned int lengthVertice, unsig
 		countNormal[ip2/nbAttribut]++;
 		countNormal[ip3/nbAttribut]++;
 		
-		std::cout << ip1 + offsetNormal+2 << " [" << ip1/nbAttribut << ", " << ip2/nbAttribut << ", " << ip3/nbAttribut << "]";
-		std::cout << " [" << Nx << ", " << Ny << ", " << Nz << "]" << std::endl;
+	//	std::cout << ip1 + offsetNormal+2 << " [" << ip1/nbAttribut << ", " << ip2/nbAttribut << ", " << ip3/nbAttribut << "]";
+	//	std::cout << " [" << Nx << ", " << Ny << ", " << Nz << "]" << std::endl;
 	}
 	
 	for(int i = 0; i < lengthVertice; i++){
 		vertice[i*nbAttribut + offsetNormal] /= countNormal[i];
 		vertice[i*nbAttribut + offsetNormal+1] /= countNormal[i];
 		vertice[i*nbAttribut + offsetNormal+2] /= countNormal[i];
-		std::cout << "mean: " << " [" << i*nbAttribut + offsetNormal << ", " << i*nbAttribut + offsetNormal+1 << ", " << i*nbAttribut + offsetNormal+2 << "]" << std::endl;
+	//	std::cout << "mean: " << " [" << i*nbAttribut + offsetNormal << ", " << i*nbAttribut + offsetNormal+1 << ", " << i*nbAttribut + offsetNormal+2 << "]" << std::endl;
 	}
 	free(countNormal);
-	std::cout << "normal cumputation done" << std::endl;
+	//std::cout << "normal cumputation done" << std::endl;
 }
 
 
+void BezierSurface::calcParaCoord(float* vertice, int resolutionU, int resolutionV, unsigned int nbAttribut, unsigned int offsetParaCoord){
+	std::cout << "calcul para sur: " << resolutionU << ", " << resolutionV << std::endl;
+	for(int i = 0; i< resolutionU+1; i++){
+		for(int j = 0; j< resolutionV+1; j++){
+			std::cout << "cible: " << nbAttribut*(resolutionV+1)*i + nbAttribut*j + offsetParaCoord << ", value: " << (float)i/(float)resolutionU << std::endl;
+			vertice[nbAttribut*(resolutionV+1)*i + nbAttribut*j + offsetParaCoord] = (float)i/(float)resolutionU;
+			vertice[nbAttribut*(resolutionV+1)*i + nbAttribut*j + offsetParaCoord+1] = (float)j/(float)resolutionV;
+		}
+	}
+}
+
 BezierSurface::BezierSurface(int resolutionU, int resolutionV){
-	unsigned int nbAttribut = 6;
+	unsigned int nbAttribut = 8;
 	unsigned int offsetNormal = 3;
+	unsigned int offsetParaCoord = 6;
 	unsigned int nbControleLine = 3;
 	unsigned int nbPtC = sizeof(verticesS)/sizeof(float)/nbAttribut;
 	//std::cout << "sizeof(verticesS): " << sizeof(verticesS) << std::endl;
@@ -144,6 +156,14 @@ BezierSurface::BezierSurface(int resolutionU, int resolutionV){
 		BezierSurface::calcBezier(&cvertices[i*nbAttribut*nbPtCInLine], nbPtCInLine, nbAttribut, resolutionU, &firstAxe[i*nbAttribut*(resolutionU+1)+nbAttribut]);
 		for(int j = 0; j<nbAttribut; j++){		
 			firstAxe[(i+1)*nbAttribut*(resolutionU+1)-nbAttribut+j] = cvertices[(i+1)*nbAttribut*nbPtCInLine-nbAttribut+j];
+		}
+	}
+	
+	//std::cout << "firstAxe: " << std::endl;
+	for(int i = 0; i<(resolutionU+1) * nbAttribut * nbControleLine; i++){
+	//	std::cout << firstAxe[i] << ", ";
+		if(i%8 == 7){
+	//		std::cout << std::endl;
 		}
 	}
 	
@@ -184,6 +204,14 @@ BezierSurface::BezierSurface(int resolutionU, int resolutionV){
 		}
 	}
 	
+	//std::cout << "second axes: " << std::endl;
+	for(int i = 0; i<(resolutionV+1) * nbAttribut * (resolutionU+1); i++){
+	//	std::cout << secondAxe[i] << ", ";
+		if(i%8 == 7){
+	//		std::cout << std::endl;
+		}
+	}
+	
 	
 	//std::cout << "secondAxis done" << std::endl;
 	int nbTriangle = (resolutionV)*(resolutionU)*6;
@@ -218,6 +246,8 @@ BezierSurface::BezierSurface(int resolutionU, int resolutionV){
 	}
 	
 	calcNormal(secondAxe, (resolutionV+1) * (resolutionU+1), pindices, nbTriangle, nbAttribut, offsetNormal);
+	
+	calcParaCoord(secondAxe, resolutionU, resolutionV, nbAttribut, offsetParaCoord);
 	
 	
 	

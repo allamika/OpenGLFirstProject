@@ -254,6 +254,7 @@ Mesh setUpCube(){
 		Vertex* vertex = new Vertex;
 		vertex->Position = vpos;
 		vertex->Normal = vnormal;
+		vertex->ParaCoord = glm::vec2(0.0f);
 		
 		vVertex.push_back(*vertex);
 	}
@@ -344,8 +345,8 @@ void setUpLight(unsigned int* pVAO){
 
 //set up VAO VBO EBO to create a triangle
 void setUpLine(unsigned int* pVAO, unsigned int* pEBO, unsigned int* nbIndice){
-	unsigned int resolution =40;
-	unsigned int resolutionV = 40;
+	unsigned int resolution =5;
+	unsigned int resolutionV = 4;
 	float length = 0.1f;
 	//BezierCurve* ourBezierCurve = new BezierCurve(resolution); //create bezier curve vertices and indices with n lines
 	//BezierCurve* ourBezierCurve = new BezierCurve(length);
@@ -361,17 +362,17 @@ void setUpLine(unsigned int* pVAO, unsigned int* pEBO, unsigned int* nbIndice){
 	
 	
 	
-	std::cout << "nb alloc: " << *nbIndice << std::endl;
+	//std::cout << "nb alloc: " << *nbIndice << std::endl;
 	for(int i = 0; i<*nbIndice; i++){
-		std::cout << val[i] << ", ";
+	//	std::cout << val[i] << ", ";
 		if(i%3 == 2){
-			std::cout << std::endl;
+	//		std::cout << std::endl;
 		}
 	}
 	
 	for(int i = 0; i<nbVertices; i++){
 		std::cout << valv[i] << ", ";
-		if(i%6 == 5){
+		if(i%8 == 7){
 			std::cout << std::endl;
 		}
 	}
@@ -397,17 +398,19 @@ void setUpLine(unsigned int* pVAO, unsigned int* pEBO, unsigned int* nbIndice){
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);//select EBO as the active EBO
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, std::get<1>(indices), std::get<0>(indices), GL_STATIC_DRAW);//transfer data to the buffer
 	
-	std::cout << "ok" << std::endl;
+	//std::cout << "ok" << std::endl;
 	
 	
 	//linking vertex attributes
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);//define vertex shader's input (vertex attribut) at position 0 : position attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);//define vertex shader's input (vertex attribut) at position 0 : position attribute
 	glEnableVertexAttribArray(0);//enable the vertex attribut 0
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3* sizeof(float)));//define vertex shader's input (vertex attribut) at position 1 : color attribute
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3* sizeof(float)));//define vertex shader's input (vertex attribut) at position 1 : color attribute
 	glEnableVertexAttribArray(1);//enable the vertex attribut 1
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6* sizeof(float)));//define vertex shader's input (vertex attribut) at position 1 : color attribute
+	glEnableVertexAttribArray(2);//enable the vertex attribut 2
 	
 	
-	std::cout << "ok" << std::endl;
+	//std::cout << "ok" << std::endl;
 	
 	
 	*pVAO = VAO;
@@ -452,26 +455,26 @@ int main()
 		
 	//generate pipeline
 	unsigned int lightVAO, VAO, EBO, nbIndice;
-	Shader ourShader("./shader/Vertex/lighted.vs", "./shader/Fragment/lighted.fs");
+	Shader ourShader("./shader/Vertex/para2D.vs", "./shader/Fragment/para2D.fs");
 	Shader lightShader("./shader/Vertex/light.vs", "./shader/Fragment/light.fs");
 	//setUpTriangle(&VAO, &EBO);
 	Mesh meshCube = setUpCube();
 	Mesh meshLight = setUpCube();
 	setUpLine(&VAO, &EBO, &nbIndice);
 	
-	std::cout << "ok1" << std::endl;
+	//std::cout << "ok1" << std::endl;
 	
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);//edge
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);//filled
 	glEnable(GL_DEPTH_TEST);
-	std::cout << "ok2" << std::endl;
+	//std::cout << "ok2" << std::endl;
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
-	std::cout << "ok3" << std::endl;
+	//std::cout << "ok3" << std::endl;
 	glfwSetCursorPosCallback(window, mouse_callback);
-	std::cout << "ok4" << std::endl;
+	//std::cout << "ok4" << std::endl;
 	glfwSetScrollCallback(window, scroll_callback);
 	
-	std::cout << "ok1" << std::endl;
+	//std::cout << "ok1" << std::endl;
 	
 	glm::vec3 cubePositions[] = {
 	    glm::vec3( 0.0f,  0.0f,  0.0f), 
@@ -497,7 +500,7 @@ int main()
 	glm::mat4 model = glm::mat4(1.0f);
 	glm::mat4 projection = glm::mat4(1.0f);
 	
-	std::cout << "start loop" << std::endl;	
+	//std::cout << "start loop" << std::endl;	
 	//render loop
 	while(!glfwWindowShouldClose(window))
 	{
@@ -547,8 +550,6 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//meshCube.Draw(ourShader);
 		glBindVertexArray(VAO);
-		
-		
 		glDrawElements(GL_TRIANGLES,nbIndice,GL_UNSIGNED_INT,0);
 		//glDrawElements(GL_LINES,nbIndice,GL_UNSIGNED_INT,0);
 		
@@ -584,12 +585,12 @@ int main()
 		glfwPollEvents();    
 	}
 	
-	std::cout << "on free tout" << std::endl;
+	//std::cout << "on free tout" << std::endl;
 	
 	//free all GLFW's resources that were allocated
 	glfwTerminate();
 	
-	std::cout << "tout finis bien" << std::endl;
+	//std::cout << "tout finis bien" << std::endl;
 
 	return 0;
 }
